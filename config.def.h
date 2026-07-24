@@ -12,7 +12,7 @@ static const char col_gray1[] = "#1d2021";
 static const char col_gray2[] = "#3c3836";
 static const char col_gray3[] = "#a89984";
 static const char col_gray4[] = "#fbf1c7";
-static const char col_cyan[]  = "#504945";
+static const char col_cyan[] = "#504945";
 static const char *colors[][3] = {
     [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
     [SchemeSel] = {col_gray4, col_cyan, col_cyan},
@@ -97,9 +97,15 @@ static const Key keys[] = {
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
             TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_q, quit, {0}},
-    {0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+ && kill -42 $(pidof dwmblocks)")},
-    {0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%- && kill -42 $(pidof dwmblocks)")},
-    {0, XF86XK_AudioMute,        spawn, SHCMD("amixer set Master toggle && kill -42 $(pidof dwmblocks)")},
+    {0, XF86XK_AudioRaiseVolume, spawn,
+     SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && kill -42 $(pidof "
+           "dwmblocks)")},
+    {0, XF86XK_AudioLowerVolume, spawn,
+     SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && kill -42 $(pidof "
+           "dwmblocks)")},
+    {0, XF86XK_AudioMute, spawn,
+     SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && kill -42 $(pidof "
+           "dwmblocks)")},
     {0, XK_Print, spawn,
      SHCMD(
          "maim -u | tee ~/Pictures/Screenshots/screenshot_$(date "
