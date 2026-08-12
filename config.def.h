@@ -1,13 +1,21 @@
 /* See LICENSE file for copyright and license details. */
+#include "fibonacci.c"
 #include <X11/XF86keysym.h>
-
 /* appearance */
 static const unsigned int borderpx = 1; /* border pixel of windows */
 static const unsigned int snap = 32;    /* snap pixel */
-static const int showbar = 1;           /* 0 means no bar */
-static const int topbar = 1;            /* 0 means bottom bar */
-static const char *fonts[] = {"JetBrainsMono Nerd Font Mono:size=10"};
-static const char dmenufont[] = "JetBrainsMono Nerd Font Mono:size=10";
+static const unsigned int gappih = 10;  /* horiz inner gap between windows */
+static const unsigned int gappiv = 10;  /* vert inner gap between windows */
+static const unsigned int gappoh =
+    10; /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov =
+    10; /* vert outer gap between windows and screen edge */
+static const int smartgaps =
+    0; /* 1 means no outer gap when there is only one window */
+static const int showbar = 1; /* 0 means no bar */
+static const int topbar = 1;  /* 0 means bottom bar */
+static const char *fonts[] = {"Liberation Mono:size=10"};
+static const char dmenufont[] = "Liberation Mono:size=10";
 static const char col_gray1[] = "#1d2021";
 static const char col_gray2[] = "#3c3836";
 static const char col_gray3[] = "#a89984";
@@ -45,6 +53,8 @@ static const Layout layouts[] = {
     {"[]=", tile}, /* first entry is default */
     {"><>", NULL}, /* no layout function means floating behavior */
     {"[M]", monocle},
+    {"[@]", spiral},
+
 };
 
 /* key definitions */
@@ -94,27 +104,43 @@ static const Key keys[] = {
     {MODKEY, XK_period, focusmon, {.i = +1}},
     {MODKEY | ShiftMask, XK_comma, tagmon, {.i = -1}},
     {MODKEY | ShiftMask, XK_period, tagmon, {.i = +1}},
+    {MODKEY | Mod4Mask, XK_h, incrgaps, {.i = +1}},
+    {MODKEY | Mod4Mask, XK_l, incrgaps, {.i = -1}},
+    {MODKEY | Mod4Mask | ShiftMask, XK_h, incrogaps, {.i = +1}},
+    {MODKEY | Mod4Mask | ShiftMask, XK_l, incrogaps, {.i = -1}},
+    {MODKEY | Mod4Mask | ControlMask, XK_h, incrigaps, {.i = +1}},
+    {MODKEY | Mod4Mask | ControlMask, XK_l, incrigaps, {.i = -1}},
+    {MODKEY | Mod4Mask, XK_0, togglegaps, {0}},
+    {MODKEY | Mod4Mask | ShiftMask, XK_0, defaultgaps, {0}},
+    {MODKEY, XK_y, incrihgaps, {.i = +1}},
+    {MODKEY, XK_o, incrihgaps, {.i = -1}},
+    {MODKEY | ControlMask, XK_y, incrivgaps, {.i = +1}},
+    {MODKEY | ControlMask, XK_o, incrivgaps, {.i = -1}},
+    {MODKEY | Mod4Mask, XK_y, incrohgaps, {.i = +1}},
+    {MODKEY | Mod4Mask, XK_o, incrohgaps, {.i = -1}},
+    {MODKEY | ShiftMask, XK_y, incrovgaps, {.i = +1}},
+    {MODKEY | ShiftMask, XK_o, incrovgaps, {.i = -1}},
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
-        TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
-            TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_q, quit, {0}},
+	TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
+	    TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_q, quit, {0}},
     {0, XF86XK_AudioRaiseVolume, spawn,
      SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && kill -42 $(pidof "
-           "dwmblocks)")},
+	   "dwmblocks)")},
     {0, XF86XK_AudioLowerVolume, spawn,
      SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && kill -42 $(pidof "
-           "dwmblocks)")},
+	   "dwmblocks)")},
     {0, XF86XK_AudioMute, spawn,
      SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && kill -42 $(pidof "
-           "dwmblocks)")},
+	   "dwmblocks)")},
     {0, XK_Print, spawn,
      SHCMD(
-         "maim -u | tee ~/Pictures/Screenshots/screenshot_$(date "
-         "+%Y-%m-%d_%H-%M-%S).png | xclip -selection clipboard -t image/png")},
+	 "maim -u | tee ~/Pictures/Screenshots/screenshot_$(date "
+	 "+%Y-%m-%d_%H-%M-%S).png | xclip -selection clipboard -t image/png")},
     {ShiftMask, XK_Print, spawn,
      SHCMD(
-         "maim -u -s | tee ~/Pictures/Screenshots/screenshot_$(date "
-         "+%Y-%m-%d_%H-%M-%S).png | xclip -selection clipboard -t image/png")},
-
+	 "maim -u -s | tee ~/Pictures/Screenshots/screenshot_$(date "
+	 "+%Y-%m-%d_%H-%M-%S).png | xclip -selection clipboard -t image/png")},
+    {MODKEY, XK_r, setlayout, {.v = &layouts[3]}},
 };
 
 /* button definitions */
