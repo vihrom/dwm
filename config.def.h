@@ -129,23 +129,11 @@ static const Key keys[] = {
     TAGKEYS(XK_9,                     8)
     {MODKEY | ShiftMask,              XK_q,      quit,           {0}},
 
-    {0, XF86XK_AudioRaiseVolume, spawn,
-     SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ && kill -42 $(pidof "
-	   "dwmblocks)")},
-    {0, XF86XK_AudioLowerVolume, spawn,
-     SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- && kill -42 $(pidof "
-	   "dwmblocks)")},
-    {0, XF86XK_AudioMute, spawn,
-     SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && kill -42 $(pidof "
-	   "dwmblocks)")},
-    {0, XK_Print, spawn,
-     SHCMD(
-	 "maim -u | tee ~/Pictures/Screenshots/screenshot_$(date "
-	 "+%Y-%m-%d_%H-%M-%S).png | xclip -selection clipboard -t image/png")},
-    {ShiftMask, XK_Print, spawn,
-     SHCMD(
-	 "maim -u -s | tee ~/Pictures/Screenshots/screenshot_$(date "
-	 "+%Y-%m-%d_%H-%M-%S).png | xclip -selection clipboard -t image/png")},
+    {0,         XF86XK_AudioRaiseVolume, spawn, SHCMD("volume-control up")},
+    {0,         XF86XK_AudioLowerVolume, spawn, SHCMD("volume-control down")},
+    {0,         XF86XK_AudioMute,        spawn, SHCMD("volume-control mute")},
+    {0,         XK_Print,                spawn, SHCMD("screenshot full")},
+    {ShiftMask, XK_Print,                spawn, SHCMD("screenshot select")},
     {MODKEY, XK_r, setlayout, {.v = &layouts[3]}},
 };
 
