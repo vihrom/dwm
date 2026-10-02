@@ -2,4 +2,6 @@
 dwm
 config.h
 *.orig
+.cache/
+compile_commands.json
 
