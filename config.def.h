@@ -13,14 +13,17 @@ static const int showbar           = 1; /* 0 means no bar */
 static const int topbar            = 1;  /* 0 means bottom bar */
 static const char *fonts[]         = {"Liberation Mono:size=10"};
 static const char dmenufont[]      = "Liberation Mono:size=10";
-static const char col_gray1[]      = "#1d2021";
-static const char col_gray2[]      = "#3c3836";
-static const char col_gray3[]      = "#a89984";
-static const char col_gray4[]      = "#fbf1c7";
-static const char col_cyan[]       = "#504945";
-static const char *colors[][3]     = {
-    [SchemeNorm]                   = {col_gray3, col_gray1, col_gray2},
-    [SchemeSel]                    = {col_gray4, col_cyan, col_cyan},
+
+static const char col_bg_paper[]   = "#ffffea";
+static const char col_bg_subtle[]  = "#eaffff";
+static const char col_text_dark[]  = "#000000";
+static const char col_text_muted[] = "#444444";
+static const char col_blue[]       = "#9eeeee";
+static const char col_border[]     = "#8888c8";
+
+static const char *colors[][3] = {
+    [SchemeNorm]               = { col_text_muted, col_bg_subtle,  col_bg_subtle },
+    [SchemeSel]                = { col_text_dark,  col_blue, col_border },
 };
 
 /* tagging */
@@ -71,8 +74,8 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[8];  /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {
-    "dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     col_gray1,
-    "-nf",       col_gray3, "-sb",    col_cyan, "-sf",     col_gray4, NULL};
+    "dmenu_run", "-m",      dmenumon, "-fn",    dmenufont, "-nb",     "#eaffff",
+    "-nf",       "#444444", "-sb",    "#9eeeee", "-sf",     "#000000", NULL};
 static const char *termcmd[] = {"st", NULL};
 
 static const Key keys[] = {
