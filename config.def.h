@@ -133,7 +133,6 @@ static const Key keys[] = {
     {0,         XF86XK_AudioMute,        spawn, SHCMD("volume-control mute")},
     {0,         XK_Print,                spawn, SHCMD("screenshot full")},
     {ShiftMask, XK_Print,                spawn, SHCMD("screenshot select")},
-    {MODKEY, XK_r, setlayout, {.v = &layouts[3]}},
 };
 
 /* button definitions */
