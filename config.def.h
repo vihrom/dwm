@@ -60,6 +60,8 @@ static const Layout layouts[] = {
     .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
   }
 
+#define STATUSBAR "dwmblocks"
+
 /* commands */
 static char dmenumon[8];  /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = {
@@ -130,4 +132,8 @@ static const Button buttons[] = {
     {ClkTagBar,     0,      Button3, toggleview,     {0}},
     {ClkTagBar,     MODKEY, Button1, tag,            {0}},
     {ClkTagBar,     MODKEY, Button3, toggletag,      {0}},
+    {ClkStatusText, 0,      Button1, sigstatusbar,   {.i = 1 }},
+    {ClkStatusText, 0,      Button3, sigstatusbar,   {.i = 3 }},
+    {ClkStatusText, 0,      Button4, sigstatusbar,   {.i = 4 }},
+    {ClkStatusText, 0,      Button5, sigstatusbar,   {.i = 5 }},
 };
